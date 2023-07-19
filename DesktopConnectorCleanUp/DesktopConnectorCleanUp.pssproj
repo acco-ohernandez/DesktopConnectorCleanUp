@@ -20,6 +20,9 @@
     <RequireElevation>True</RequireElevation>
     <PackageModules>True</PackageModules>
     <HighDPISupport>False</HighDPISupport>
+    <PowerShellArgs>-NoProfile -ExecutionPolicy Bypass</PowerShellArgs>
+    <Version>1.0.2</Version>
+    <FileVersion>1.2</FileVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>

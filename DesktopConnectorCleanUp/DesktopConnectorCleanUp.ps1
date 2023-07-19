@@ -120,11 +120,11 @@ foreach ($registryPath in $RegistryKeys)
     {
         # Delete the registry key and its subkeys
         Remove-Item -Path $registryPath -Recurse
-        Write-Host "Registry key '$registryPath' deleted successfully." -ForegroundColor Green
+        Write-Host "Registry key Deleted: '$registryPath'" -ForegroundColor Green
     }
     else
     {
-        Write-Host "Registry key '$registryPath' does not exist." -ForegroundColor Yellow
+        Write-Host "Registry key not found: '$registryPath'" -ForegroundColor Yellow
     }
 }
 Read-Host "Hit ENTER to Exit."
