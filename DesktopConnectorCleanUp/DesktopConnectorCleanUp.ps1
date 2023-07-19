@@ -15,7 +15,7 @@ else{
     Write-Host "DesktopConnector.Applications.Tray Process is not Running" -ForegroundColor Yellow
 }
 # =============================================
-# Delete the following folders if they exist
+# Get all the paths to be deleted if they exist
 $AllUserProfileFolderPaths = Get-ChildItem "C:\Users" -Directory | Select-Object -ExpandProperty FullName
 $PathsToDelete = @()
 foreach ($userProfile in $AllUserProfileFolderPaths)
@@ -99,7 +99,7 @@ foreach ($userProfile in $AllUserProfileFolderPaths)
             Write-Host "Path not found: $_" -ForegroundColor Yellow
         }
     }
-
+# ==========>
 # Delete all the paths in the array $PathsToDelete
 foreach ($path in $PathsToDelete)
 {
