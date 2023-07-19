@@ -3,7 +3,7 @@
 #
 # start log
 Start-Transcript "$env:windir\Temp\DesktopConnecorCleanUp_ScriptLog.txt"
-
+# =============================================
 # Stop Desktop Connector Prosses if it's running
 if (Get-Process "DesktopConnector.Applications.Tray" -ErrorAction SilentlyContinue)
 {
@@ -14,7 +14,7 @@ if (Get-Process "DesktopConnector.Applications.Tray" -ErrorAction SilentlyContin
 else{
     Write-Host "DesktopConnector.Applications.Tray Process is not Running" -ForegroundColor Yellow
 }
-
+# =============================================
 # Delete the following folders if they exist
 $AllUserProfileFolderPaths = Get-ChildItem "C:\Users" -Directory | Select-Object -ExpandProperty FullName
 $PathsToDelete = @()
