@@ -107,7 +107,7 @@ foreach ($path in $PathsToDelete)
     #$Folder = Get-Item $path
     #$Folder.Delete($true)
     Remove-Item $path -Recurse -Force
-    $Folder = $null # Reset the variable
+    #$Folder = $null # Reset the variable
 }
 
 # =============================================
