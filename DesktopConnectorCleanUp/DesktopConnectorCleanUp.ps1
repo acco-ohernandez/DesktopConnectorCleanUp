@@ -104,8 +104,9 @@ foreach ($userProfile in $AllUserProfileFolderPaths)
 foreach ($path in $PathsToDelete)
 {
     Write-Host "Deleting: $path" -ForegroundColor Cyan
-    $Folder = Get-Item $path
-    $Folder.Delete($true)
+    #$Folder = Get-Item $path
+    #$Folder.Delete($true)
+    Remove-Item $path -Recurse -Force
     $Folder = $null # Reset the variable
 }
 
