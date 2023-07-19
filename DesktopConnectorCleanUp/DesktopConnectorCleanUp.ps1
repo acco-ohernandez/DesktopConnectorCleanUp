@@ -5,11 +5,14 @@
 Start-Transcript "$env:windir\Temp\DesktopConnecorCleanUp_ScriptLog.txt"
 
 # Stop Desktop Connector Prosses if it's running
-if (Get-Process "DesktopConnector.Applications.Tray")
+if (Get-Process "DesktopConnector.Applications.Tray" -ErrorAction SilentlyContinue)
 {
     Write-Host "Terminating Process: DesktopConnector.Applications.Tray" -ForegroundColor Green
     Get-Process "DesktopConnector.Applications.Tray" | Stop-Process -Force
     Start-Sleep -Seconds 2
+}
+else{
+    Write-Host "DesktopConnector.Applications.Tray Process is not Running" -ForegroundColor Yellow
 }
 
 # Delete the following folders if they exist
@@ -86,10 +89,15 @@ foreach ($userProfile in $AllUserProfileFolderPaths)
 
 # add the following paths if they exist
 "C:\Program Files\Autodesk\Desktop Connector", "C:\ProgramData\Autodesk\Desktop Connector" |
-    ForEach-Object { if (Test-Path $_ -ErrorAction SilentlyContinue)
+    ForEach-Object {
+        if (Test-Path $_ -ErrorAction SilentlyContinue)
         {
             $PathsToDelete += $_
-        } 
+        }
+        else
+        {
+            Write-Host "Path not found: $_" -ForegroundColor Yellow
+        }
     }
 
 # Delete all the paths in the array $PathsToDelete
