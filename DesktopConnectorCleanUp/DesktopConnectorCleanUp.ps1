@@ -1,8 +1,17 @@
 ﻿#
 # Script.ps1
 #
-
+# start log
 Start-Transcript "$env:windir\Temp\DesktopConnecorCleanUp_ScriptLog.txt"
+
+# Stop Desktop Connector Prosses if it's running
+if (Get-Process "DesktopConnector.Applications.Tray")
+{
+    Write-Host "Terminating Process: DesktopConnector.Applications.Tray" -ForegroundColor Green
+    Get-Process "DesktopConnector.Applications.Tray" | Stop-Process -Force
+    Start-Sleep -Seconds 2
+}
+
 # Delete the following folders if they exist
 $AllUserProfileFolderPaths = Get-ChildItem "C:\Users" -Directory | Select-Object -ExpandProperty FullName
 $PathsToDelete = @()
