@@ -138,6 +138,9 @@ function RemoveDirectoryRecursive($directory)
         Remove-Item $tempDirectory -Force -Recurse | out-null
     }
 }
+
+# Stop the service before attempting to delete the Desktop Connector folders
+StopFileSystemMonitorService
 foreach ($path in $PathsToDelete)
 {
     Write-Host "Deleting: $path" -ForegroundColor Cyan
