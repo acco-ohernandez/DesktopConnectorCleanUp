@@ -100,16 +100,49 @@ foreach ($userProfile in $AllUserProfileFolderPaths)
         }
     }
 # ==========>
+function StopFileSystemMonitorService
+{
+    $serviceName = "Autodesk File System Monitor Service"
+    if((Get-Service -Name $serviceName -ErrorAction SilentlyContinue).Status -eq "Running")
+    {
+        Write-Host "Stopping: `'$serviceName`'" -ForegroundColor Yellow
+        Stop-Service -Name $serviceName -Force
+        Start-Sleep -Seconds 3
+        Write-Host "Stopped: `'$serviceName`'" -ForegroundColor Yellow
+    }
+}
+# ==========>
 # Delete all the paths in the array $PathsToDelete
+#foreach ($path in $PathsToDelete)
+#{
+#    Write-Host "Deleting: $path" -ForegroundColor Cyan
+#    #$Folder = Get-Item $path
+#    #$Folder.Delete($true)
+#    Remove-Item $path -Recurse -Force
+#    #$Folder = $null # Reset the variable
+#}
+function RemoveDirectoryRecursive($directory)
+{
+    # create a temporary (empty) directory
+    $parent = [System.IO.Path]::GetTempPath()
+    [string] $name = [System.Guid]::NewGuid()
+    $tempDirectory = New-Item -ItemType Directory -Path (Join-Path $parent $name)
+
+    try
+    {
+        robocopy /MIR $tempDirectory.FullName $directory | out-null
+        Remove-Item $directory -Force -Recurse | out-null
+    }
+    finally
+    {
+        Remove-Item $tempDirectory -Force -Recurse | out-null
+    }
+}
 foreach ($path in $PathsToDelete)
 {
     Write-Host "Deleting: $path" -ForegroundColor Cyan
-    #$Folder = Get-Item $path
-    #$Folder.Delete($true)
-    Remove-Item $path -Recurse -Force
-    #$Folder = $null # Reset the variable
+    RemoveDirectoryRecursive($path)
 }
-
 # =============================================
 # Delete the following registry keys if they exist:
 $RegistryKeys = "HKLM:\SOFTWARE\Autodesk\Autodesk Desktop Connector", "HKLM:\SOFTWARE\Autodesk\Desktop Connector"
