@@ -8,8 +8,11 @@ $currentUser = [System.Security.Principal.WindowsIdentity]::GetCurrent()
 $isAdmin = [Security.Principal.WindowsPrincipal]::new($currentUser).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
 
 if (-not $isAdmin) {
-    # Relaunch the script with elevated privileges
-    Start-Process -FilePath PowerShell.exe -ArgumentList "-NoProfile -ExecutionPolicy Bypass -File `"$PSCommandPath`"" -Verb RunAs
+    cls
+    Write-Host "`nRelaunch the script with elevated privileges.`n"
+    Write-Host "Exiting in..."
+    5..1 | %{$_ ; Start-Sleep -Seconds 1}
+    cls; "GOOD BYE" ; Start-Sleep -Seconds 1
     Exit
 }
 
