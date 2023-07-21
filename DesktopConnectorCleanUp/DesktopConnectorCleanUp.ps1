@@ -1,6 +1,20 @@
 ﻿#
 # Script.ps1
 #
+# Get the current Windows identity
+$currentUser = [System.Security.Principal.WindowsIdentity]::GetCurrent()
+
+# Check if the current user is running with administrative privileges
+$isAdmin = [Security.Principal.WindowsPrincipal]::new($currentUser).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
+
+if (-not $isAdmin) {
+    # Relaunch the script with elevated privileges
+    Start-Process -FilePath PowerShell.exe -ArgumentList "-NoProfile -ExecutionPolicy Bypass -File `"$PSCommandPath`"" -Verb RunAs
+    Exit
+}
+
+# =============================================
+
 # start log
 Start-Transcript "$env:windir\Temp\DesktopConnecorCleanUp_ScriptLog.txt"
 # =============================================
@@ -131,11 +145,11 @@ function RemoveDirectoryRecursive($directory)
     try
     {
         robocopy /MIR $tempDirectory.FullName $directory | out-null
-        Remove-Item $directory -Force -Recurse | out-null
+        Remove-Item $directory -Force -Recurse -Verbose #| out-null
     }
     finally
     {
-        Remove-Item $tempDirectory -Force -Recurse | out-null
+        Remove-Item $tempDirectory -Force -Recurse -Verbose # | out-null
     }
 }
 
@@ -148,7 +162,7 @@ foreach ($path in $PathsToDelete)
 }
 # =============================================
 # Delete the following registry keys if they exist:
-$RegistryKeys = "HKLM:\SOFTWARE\Autodesk\Autodesk Desktop Connector", "HKLM:\SOFTWARE\Autodesk\Desktop Connector"
+$RegistryKeys = "HKCU:\SOFTWARE\Autodesk\Autodesk Desktop Connector", "HKLM:\SOFTWARE\Autodesk\Desktop Connector"
 foreach ($registryPath in $RegistryKeys)
 {
     # Check if the registry key exists
